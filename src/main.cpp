@@ -1,5 +1,6 @@
 #include <concepts>
 #include <iterator>
+#include <cmath>
 
 using namespace std;
 
@@ -68,9 +69,34 @@ auto mean(const C& container) {
 		total_sum += value;
 	}
 
-	return (total_sum)/n;
+	return total_sum/n;	
 
 }
+
+
+template<Iterable C>
+requires Addable<typename C::value_type> && Divisible<typename C::value_type>
+auto variance(const C& container) {
+
+	using T = typename C::value_type;
+
+	size_t n = count_elements(container);	
+
+	if (n == 0) {
+		return T {}
+	}
+
+	T container_avg = mean(container);
+	
+	T upper_sum{};
+	
+	for (const auto& value: container) {
+		upper_sum += pow(container - container_avg, 2);	
+	}	
+
+	return upper_sum/n;
+}
+
 
 }
 
