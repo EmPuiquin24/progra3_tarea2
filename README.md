@@ -1,6 +1,6 @@
 # CoreNumeric
 
-Autor: Hector Emilio Huaman Puiquin
+Autor: *Hector Emilio Huaman Puiquin*
 
 ## Instrucciones de ejecución
 
