@@ -7,6 +7,8 @@
 #include <iostream>
 #include <cmath>
 
+using namespace std;
+
 namespace CoreNumeric {
 
 template <Iterable C> 
@@ -70,7 +72,7 @@ auto variance(const C& container) {
 	
 	T upper_sum{};
 	for (const auto& value: container) {
-		upper_sum += pow(container - container_avg, 2);	
+		upper_sum += pow(value - container_avg, 2);	
 	}	
 
 	return upper_sum/n;

@@ -1,6 +1,7 @@
 // TODO: quizás añadir un concept "multiplicar"
 // TODO: verificar que la división (mean) no se castee a int si es float o double.
 // TODO: usar constexpr
+// TODO: max falla con listas?
 
 int main() {
 	return 0;
