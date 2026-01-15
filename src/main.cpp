@@ -1,4 +1,6 @@
 #include <concepts>
+#include <functional>
+#include <iostream>
 #include <iterator>
 #include <cmath>
 
@@ -20,14 +22,14 @@ concept Addable = requires(T a, T b) {
 template<typename T>
 concept Divisible = requires(T a, size_t n) {
 	{ a / n } -> std::same_as<T>;
-}
+};
 
 template<typename T>
 concept Comparable = requires(T a, T b) {
 	{a = b} -> same_as<bool>;
 	{a > b} -> same_as<bool>;
 	{b < a} -> same_as<bool>;
-}
+};
 
 template <Iterable C> 
 size_t count_elements(const C& container) {
@@ -90,7 +92,6 @@ auto variance(const C& container) {
 	T container_avg = mean(container);
 	
 	T upper_sum{};
-	
 	for (const auto& value: container) {
 		upper_sum += pow(container - container_avg, 2);	
 	}	
@@ -103,40 +104,39 @@ requires Comparable<typename C::value_type>
 auto max(const C& container) {
 
 	using T = typename C::value_type;
-	T result {};
 
 	size_t n = count_elements(container);
-	
 	if (n == 0) {
 		cout << "El contenedor tiene 0 elementos, no se puede obtener un máximo" << endl;
 		return T {};	
 	}
 
 	T result = container[0];	
-	for (auto value& : container) {
+	for (auto const& value : container) {
 		result = max(result, value);
 	}
 
 	return result;
 }
 
-template <Iterable C>
+template <Iterable C, typename U>
 requires Addable<typename C::value_type> && 
 Divisible<typename C::value_type> &&
 Comparable<typename C::value_type>
-auto transform_reduce(const C& container, function<C> f) {
+auto transform_reduce(const C& container, function<U(C)> func) {
 
 	using T = typename C::value_type;
 
 	T result {};
 
+	size_t n = count_elements(container);
 	if (n == 0) {
 		cout << "El contenedor está vacío" << endl;
-		T {};	
+		return T {};	
 	}
 
-	for (auto value& : container) {
-		result += f(value);
+	for (auto const& value : container) {
+		result += func(value);
 	}
 
 	return result;
