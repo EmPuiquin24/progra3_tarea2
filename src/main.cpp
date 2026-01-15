@@ -18,10 +18,16 @@ concept Addable = requires(T a, T b) {
 
 
 template<typename T>
-concept Divisible = requires(T a, std::size_t n) {
+concept Divisible = requires(T a, size_t n) {
 	{ a / n } -> std::same_as<T>;
 }
 
+template<typename T>
+concept Comparable = requires(T a, T b) {
+	{a = b} -> same_as<bool>;
+	{a > b} -> same_as<bool>;
+	{b < a} -> same_as<bool>;
+}
 
 template <Iterable C> 
 size_t count_elements(const C& container) {
@@ -31,6 +37,7 @@ size_t count_elements(const C& container) {
 	for (const auto &_ : container ) {
 		++ count ;
 	}
+
 	return count ;
 }
 
@@ -41,8 +48,8 @@ requires Addable<typename C::value_type>
 auto sum(const C& container) {
 
 	using T = typename C::value_type;
-	T result {};
 
+	T result {};
 	for (const auto& value : container) {
 		result = result + value;
 	}
@@ -58,19 +65,13 @@ auto mean(const C& container) {
 	using T = typename C::value_type;
 
 	size_t n  = count_elements(container);
-
 	if (n == 0) {
-		return T {}
+		return T {};
 	}
 
-	T total_sum {};
-
-	for (const auto& value : container) {
-		total_sum += value;
-	}
+	T total_sum = sum(container);
 
 	return total_sum/n;	
-
 }
 
 
@@ -81,9 +82,9 @@ auto variance(const C& container) {
 	using T = typename C::value_type;
 
 	size_t n = count_elements(container);	
-
 	if (n == 0) {
-		return T {}
+		cout << "El contenedor tiene 0 elementos, no se puede obtener la varianza" << endl;
+		return T {};
 	}
 
 	T container_avg = mean(container);
@@ -95,6 +96,28 @@ auto variance(const C& container) {
 	}	
 
 	return upper_sum/n;
+}
+
+template<Iterable C>
+requires Comparable<typename C::value_type>
+auto max(const C& container) {
+
+	using T = typename C::value_type;
+	T result {};
+
+	size_t n = count_elements(container);
+	
+	if (n == 0) {
+		cout << "El contenedor tiene 0 elementos, no se puede obtener un máximo" << endl;
+		return T {};	
+	}
+
+	T result = container[0];	
+	for (auto value& : container) {
+		result = max(result, value);
+	}
+
+	return result;
 }
 
 
