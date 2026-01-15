@@ -51,7 +51,7 @@ auto sum(const C& container) {
 
 	T result {};
 	for (const auto& value : container) {
-		result = result + value;
+		result += value;
 	}
 
 	return result;
@@ -120,8 +120,30 @@ auto max(const C& container) {
 	return result;
 }
 
+template <Iterable C>
+requires Addable<typename C::value_type> && 
+Divisible<typename C::value_type> &&
+Comparable<typename C::value_type>
+auto transform_reduce(const C& container, function<C> f) {
 
+	using T = typename C::value_type;
+
+	T result {};
+
+	if (n == 0) {
+		cout << "El contenedor está vacío" << endl;
+		T {};	
+	}
+
+	for (auto value& : container) {
+		result += f(value);
+	}
+
+	return result;
 }
+
+
+} // Fin del namespace
 
 int main() {
 	return 0;
