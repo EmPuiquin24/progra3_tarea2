@@ -15,16 +15,16 @@ mkdir build && cd build
 cmake ..
 cmake --build . 
 ```
-- En caso quieras recompilar el programa, solo basta con:
+- En caso quieras recompilar los tests, solo basta con:
 ``` 
 cd build // En caso no estés ya en la ruta
 cmake ..
 cmake --build
 ``` 
 
-4. Correr el programa con:
+4. Correr los tests con:
 ``` 
-./CoreNumeric
+./Tests
 ```
 
 

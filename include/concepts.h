@@ -16,7 +16,17 @@ concept Addable = requires(T a, T b) {
 
 template<typename T>
 concept Divisible = requires(T a, size_t n) {
-	{ a / n } -> std::same_as<T>;
+	{ a / n };
+};
+
+template<typename T>
+concept Subtractable = requires(T a, T b) {
+	{a - b} -> std::same_as<T>;
+};
+
+template<typename T>
+concept Multipliable = requires(T a, T b) {
+	{a * b} -> std::same_as<T>;
 };
 
 template<typename T>
@@ -24,6 +34,8 @@ concept Comparable = requires(T a, T b) {
 	{a == b} -> std::same_as<bool>;
 	{a > b} -> std::same_as<bool>;
 	{b < a} -> std::same_as<bool>;
+	{a >= b} -> std::same_as<bool>;
+	{b <= a} -> std::same_as<bool>;
 };
 
 #endif // CONCEPTS_H
